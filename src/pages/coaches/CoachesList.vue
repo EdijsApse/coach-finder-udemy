@@ -5,7 +5,7 @@
   <section>
     <base-card>
       <div class="controls">
-        <base-button mode="outline">Refresh</base-button>
+        <base-button mode="outline" @click="loadCoaches">Refresh</base-button>
         <base-button v-if="!isCoach" :link="true" to="/register">Register as Coach</base-button>
       </div>
       <ul v-if="hasCoaches">
@@ -28,6 +28,9 @@
           career: true
         }
       }
+    },
+    created() {
+      this.loadCoaches()
     },
     components: {
       'coach-item': CoachListItem,
@@ -60,6 +63,9 @@
       }
     },
     methods: {
+      loadCoaches() {
+        this.$store.dispatch('coachesModule/loadCoaches');
+      },
       filterApplies(area, coachAreas) {
         return this.activeFilters[area] === true && coachAreas.includes(area);
       },
