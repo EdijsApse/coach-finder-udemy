@@ -19,7 +19,6 @@
   export default {
     computed: {
       receivedRequest() {
-        console.log(this.$store.getters['requestsModule/requests'])
         return this.$store.getters['requestsModule/requests']
       },
       hasRequests() {
