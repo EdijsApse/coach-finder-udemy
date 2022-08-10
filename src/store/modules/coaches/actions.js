@@ -24,7 +24,11 @@ export default {
     });
     
   },
-  async loadCoaches(context) {
+  async loadCoaches(context, payload) {
+    if (context.getters.shouldUpdate === false && !payload.forceRefresh) {
+      return;
+    }
+
     const response = await fetch(`${process.env.VUE_APP_FIREBASE_DB_URL}/coaches.json`);
     const responseData = await response.json();
     
@@ -42,5 +46,6 @@ export default {
       })
     }
     context.commit('setCoaches', coaches);
+    context.commit('setFetchTimestamnp');
   }
 };

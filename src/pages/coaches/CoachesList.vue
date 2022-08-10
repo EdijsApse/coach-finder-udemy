@@ -8,7 +8,7 @@
   <section>
     <base-card>
       <div class="controls">
-        <base-button mode="outline" @click="loadCoaches">Refresh</base-button>
+        <base-button mode="outline" @click="loadCoaches(true)">Refresh</base-button>
         <base-button v-if="!isCoach && !isLoading" :link="true" to="/register">Register as Coach</base-button>
       </div>
       <div v-if="isLoading">
@@ -38,7 +38,7 @@
       }
     },
     created() {
-      this.loadCoaches()
+      this.loadCoaches(false)
     },
     components: {
       'coach-item': CoachListItem,
@@ -74,11 +74,11 @@
       handleError() {
         this.error = null;
       },
-      async loadCoaches() {
+      async loadCoaches(forceRefresh) {
         this.isLoading = true;
 
         try {
-          await this.$store.dispatch('coachesModule/loadCoaches');
+          await this.$store.dispatch('coachesModule/loadCoaches', {forceRefresh: forceRefresh});
         } catch (err) {
           this.error = err.message || 'Something went wrong!';
         }
