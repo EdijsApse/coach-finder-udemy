@@ -33,7 +33,7 @@ export default {
     const responseData = await response.json();
     
     if (!response.ok) {
-      const err = new Error(responseData.message || 'Failed to fetch');
+      const err = new Error(responseData.error.message || 'Failed to fetch');
       throw err;
     }
 
