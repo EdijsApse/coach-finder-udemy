@@ -9,7 +9,7 @@ export default {
       hourlyRate: data.rate
     }
 
-    const response = await fetch(`${process.env.VUE_APP_FIREBASE_DB_URL}/coaches/${userId}.json`, {
+    const response = await fetch(`${process.env.VUE_APP_FIREBASE_DB_URL}/coaches/${userId}.json?auth=${context.rootGetters.token}`, {
       method: 'PUT',
       body: JSON.stringify(coach)
     });

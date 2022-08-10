@@ -22,7 +22,7 @@ export default {
     });
   },
   async fetchRequests(context) {
-    const response = await fetch(`${process.env.VUE_APP_FIREBASE_DB_URL}/requests/${context.rootGetters.userId}.json`);
+    const response = await fetch(`${process.env.VUE_APP_FIREBASE_DB_URL}/requests/${context.rootGetters.userId}.json?auth=${context.rootGetters.token}`);
     const responseData = await response.json();
 
     if (!response.ok) {
