@@ -1,54 +1,63 @@
 <template>
-  <section>
-    <base-card>
-      <h2>{{ fullName }}</h2>
-      <h3>{{ rate }}</h3>
-    </base-card>
-  </section>
-  <section>
-    <base-card>
-      <header>
-        <h2>Interested? Reach out now.</h2>
-        <base-button :link="true" :to="contactLink">Contact</base-button>
-      </header>
-      <router-view></router-view>
-    </base-card>
-  </section>
-  <section>
-    <base-card>
-      <base-badge v-for="area in areas" :key="area" :title="area" :type="area"></base-badge>
-      <p>{{ description }}</p>
-    </base-card>
-  </section>
+  <div>
+    <section>
+      <base-card>
+        <h2>{{ fullName }}</h2>
+        <h3>{{ rate }}</h3>
+      </base-card>
+    </section>
+    <section>
+      <base-card>
+        <header>
+          <h2>Interested? Reach out now.</h2>
+          <base-button :link="true" :to="contactLink">Contact</base-button>
+        </header>
+        <router-view></router-view>
+      </base-card>
+    </section>
+    <section>
+      <base-card>
+        <base-badge
+          v-for="area in areas"
+          :key="area"
+          :title="area"
+          :type="area"
+        ></base-badge>
+        <p>{{ description }}</p>
+      </base-card>
+    </section>
+  </div>
 </template>
 
 <script>
-  export default {
-    props: ['id'],
-    data() {
-      return {
-        selectedCoach: null
-      }
+export default {
+  props: ['id'],
+  data() {
+    return {
+      selectedCoach: null,
+    };
+  },
+  computed: {
+    fullName() {
+      return `${this.selectedCoach.firstName} ${this.selectedCoach.firstName}`;
     },
-    computed: {
-      fullName() {
-        return `${this.selectedCoach.firstName} ${this.selectedCoach.firstName}` 
-      },
-      contactLink() {
-        return `${this.$route.path}/contact`
-      },
-      description() {
-        return this.selectedCoach.description
-      },
-      rate() {
-        return `$${this.selectedCoach.hourlyRate}/hour`;
-      },
-      areas() {
-        return this.selectedCoach.areas;
-      }
+    contactLink() {
+      return `${this.$route.path}/contact`;
     },
-    created() {
-      this.selectedCoach = this.$store.getters['coachesModule/coaches'].find((coach) => coach.id === this.id);
-    }
-  }
+    description() {
+      return this.selectedCoach.description;
+    },
+    rate() {
+      return `$${this.selectedCoach.hourlyRate}/hour`;
+    },
+    areas() {
+      return this.selectedCoach.areas;
+    },
+  },
+  created() {
+    this.selectedCoach = this.$store.getters['coachesModule/coaches'].find(
+      (coach) => coach.id === this.id
+    );
+  },
+};
 </script>
