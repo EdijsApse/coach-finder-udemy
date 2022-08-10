@@ -6,9 +6,12 @@
     <base-card>
       <div class="controls">
         <base-button mode="outline" @click="loadCoaches">Refresh</base-button>
-        <base-button v-if="!isCoach" :link="true" to="/register">Register as Coach</base-button>
+        <base-button v-if="!isCoach && !isLoading" :link="true" to="/register">Register as Coach</base-button>
       </div>
-      <ul v-if="hasCoaches">
+      <div v-if="isLoading">
+        <base-spinner></base-spinner>
+      </div>
+      <ul v-else-if="hasCoaches && !isLoading">
         <coach-item v-for="coach in filteredCoaches" :key="coach.id" v-bind="coach"></coach-item>
       </ul>
       <h3 v-else>No coaches found</h3>
@@ -26,7 +29,8 @@
           frontend: true,
           backend: true,
           career: true
-        }
+        },
+        isLoading: false
       }
     },
     created() {
@@ -63,8 +67,10 @@
       }
     },
     methods: {
-      loadCoaches() {
-        this.$store.dispatch('coachesModule/loadCoaches');
+      async loadCoaches() {
+        this.isLoading = true;
+        await this.$store.dispatch('coachesModule/loadCoaches');
+        this.isLoading = false;
       },
       filterApplies(area, coachAreas) {
         return this.activeFilters[area] === true && coachAreas.includes(area);
