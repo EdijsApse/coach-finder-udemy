@@ -16,20 +16,21 @@ export default {
 
     if (!response.ok) {
       alert('Something went wrong!')
-    } else {
-      context.commit('registerCoach', {
-        ...coach,
-        id: userId
-      });
     }
+    
+    context.commit('registerCoach', {
+      ...coach,
+      id: userId
+    });
+    
   },
-  async loadCoaches(context, payload) {
-    console.log(payload);
+  async loadCoaches(context) {
     const response = await fetch(`${process.env.VUE_APP_FIREBASE_DB_URL}/coaches.json`);
     const responseData = await response.json();
     
     if (!response.ok) {
-      alert('Something went wrong!')
+      const err = new Error(responseData.message || 'Failed to fetch');
+      throw err;
     }
 
     const coaches = [];

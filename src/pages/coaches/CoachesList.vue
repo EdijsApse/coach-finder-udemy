@@ -1,4 +1,7 @@
 <template>
+  <base-dialog :show="!!error" title="An error occured!" @close="handleError">
+    <p>{{ error }}</p>
+  </base-dialog>
   <section>
     <coach-filter @change-filters="setFilters"></coach-filter>
   </section>
@@ -30,7 +33,8 @@
           backend: true,
           career: true
         },
-        isLoading: false
+        isLoading: false,
+        error: null
       }
     },
     created() {
@@ -67,9 +71,18 @@
       }
     },
     methods: {
+      handleError() {
+        this.error = null;
+      },
       async loadCoaches() {
         this.isLoading = true;
-        await this.$store.dispatch('coachesModule/loadCoaches');
+
+        try {
+          await this.$store.dispatch('coachesModule/loadCoaches');
+        } catch (err) {
+          this.error = err.message || 'Something went wrong!';
+        }
+        
         this.isLoading = false;
       },
       filterApplies(area, coachAreas) {
