@@ -8,6 +8,8 @@ import RequestsReceived from './pages/requests/RequestsReceived';
 import NotFound from './pages/NotFound';
 import LoginPage from './pages/auth/UserAuth';
 
+import store from './store/index';
+
 const router = createRouter({
   history: createWebHistory(),
   routes: [
@@ -34,14 +36,23 @@ const router = createRouter({
     {
       path: '/register',
       component: CoachRegistration,
+      meta: {
+        requiresAuth: true
+      }
     },
     {
       path: '/requests',
       component: RequestsReceived,
+      meta: {
+        requiresAuth: true
+      }
     },
     {
       path: '/auth',
       component: LoginPage,
+      meta: {
+        requiresGuest: true
+      }
     },
     {
       path: '/:notFound(.*)',
@@ -49,5 +60,20 @@ const router = createRouter({
     },
   ],
 });
+
+router.beforeEach((to, from, next) => {
+  const {requiresAuth, requiresGuest} = to.meta;
+  const isAuthenticated = store.getters.isAuthenticated;
+
+  if (requiresAuth === true && isAuthenticated === false) {
+    return next('/auth')
+  }
+
+  if (requiresGuest === true && isAuthenticated === true) {
+    return next('/coaches')
+  }
+
+  next();
+})
 
 export default router;
