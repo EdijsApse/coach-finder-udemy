@@ -15,7 +15,7 @@
           <base-button v-if="canRegisterAsCoach" :link="true" to="/register"
             >Register as Coach</base-button
           >
-          <base-button v-else :link="true" to="/auth?redirect=register"
+          <base-button v-if="!isAuthenticated" :link="true" to="/auth?redirect=register"
             >Login to register as Coach</base-button
           >
         </div>
