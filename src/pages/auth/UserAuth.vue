@@ -33,7 +33,8 @@ export default {
       formIsValid: true,
       mode: 'login',
       isLoading: false,
-      error: null
+      error: null,
+      redirectGiven: !!this.$route.query.redirect
     };
   },
   computed: {
@@ -67,7 +68,9 @@ export default {
         } else {
           await this.$store.dispatch('signup', { email: this.email, password: this.password });
         }
-        this.$router.replace('/coaches');
+        const redirect = this.redirectGiven ? '/register' : '/coaches';
+        
+        this.$router.replace(redirect);
       }
       catch(err) {
         this.error = err.message || 'Failed to authenticate! Try again later!';

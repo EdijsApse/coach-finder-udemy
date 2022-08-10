@@ -15,6 +15,9 @@
           <base-button v-if="canRegisterAsCoach" :link="true" to="/register"
             >Register as Coach</base-button
           >
+          <base-button v-else :link="true" to="/auth?redirect=register"
+            >Login to register as Coach</base-button
+          >
         </div>
         <div v-if="isLoading">
           <base-spinner></base-spinner>
